@@ -6,6 +6,10 @@ set -ex
 #
 # 2018-12-11, Juha Lento, CSC
 # 2019-09-28, Petteri Uotila, UH
+#
+# NOTE Could not find libcurl so installed it 
+# in $PROJAPPL /projappl/project_2000789
+#
 # The following build instruction is based on:
 # - http://forge.ipsl.jussieu.fr/ioserver/wiki/documentation
 
