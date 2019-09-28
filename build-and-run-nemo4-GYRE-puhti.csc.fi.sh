@@ -56,8 +56,6 @@ EOF
 
 ./makenemo -j 8 -m ${compiler}-puhti.csc.fi -r GYRE_PISCES -n MY_GYRE del_key key_top
 
-exit
-
 # run the experiment
 cd cfgs/MY_GYRE/EXP00
 
@@ -67,17 +65,12 @@ sbatch << EOF
 ### parallel job script example
 ###
 ## name of your job
-#SBATCH -J orca2
-## a per-process (soft) memory limit
-## limit is specified in MB
-## example: 1 GB is 1000
-#SBATCH --mem-per-cpu=2000
-## how long a job takes, wallclock time hh:mm:ss
-#SBATCH -t 02:00:00
-##the number of processes (number of cores)
-#SBATCH -n 8
-##parallel queue
-#SBATCH -p parallel
+#SBATCH --job-name=gyre
+#SBATCH --account=project_2000789
+#SBATCH --time=00:30:00
+#SBATCH --mem-per-cpu=2G
+#SBATCH --partition=test
+
 ## run my MPI executable
 srun ./nemo
 EOF
