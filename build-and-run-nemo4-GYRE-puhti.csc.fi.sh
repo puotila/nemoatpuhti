@@ -11,8 +11,8 @@ nemo_version=4.0
 
 compiler=intel
 compiler_version=19.0.4
-mpi=hpcx-mpi
-mpi_version=2.4.0
+mpi=intel-mpi
+mpi_version=18.0.5
 
 module purge
 module load StdEnv ${compiler}/${compiler_version} ${mpi}/${mpi_version}
