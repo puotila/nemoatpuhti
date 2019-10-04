@@ -24,7 +24,7 @@ module purge
 module load StdEnv ${compiler}/${compiler_version} ${mpi}/${mpi_version}
 module load netcdf/4.7.0 netcdf-fortran/4.4.4 hdf5/1.10.4-mpi
 
-cd $TMPDIR
+cd $PROJAPPL
 svn co http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/branchs/xios-${xios_version}
 xios_revision=$(svn info | sed -n 's/Revision: \([0-9]\+\)/\1/p')
 
