@@ -20,10 +20,11 @@ module load netcdf/4.7.0 netcdf-fortran/4.4.4 hdf5/1.10.4-mpi
 
 cd $PROJAPPL
 # Checkout sources
-svn co https://forge.ipsl.jussieu.fr/nemo/svn/NEMO/releases/release-4.0
+svn co https://forge.ipsl.jussieu.fr/nemo/svn/NEMO/releases/r4.0/r4.0.6
+#svn co https://forge.ipsl.jussieu.fr/nemo/svn/NEMO/releases/release-4.0
 #svn co -r10645 http://forge.ipsl.jussieu.fr/nemo/svn/NEMO/trunk nemo4.0
 
-cd release-4.0
+cd r4.0.6
 nemo_revision=$(svn info | sed -n 's/Revision: \([0-9]\+\)/\1/p')
 
 cat > arch/arch-${compiler}-puhti.csc.fi.fcm <<EOF
@@ -67,9 +68,13 @@ sbatch << EOF
 ## name of your job
 #SBATCH --job-name=gyre
 #SBATCH --account=project_2000789
-#SBATCH --time=00:30:00
+#SBATCH --time=00:15:00
 #SBATCH --mem-per-cpu=2G
 #SBATCH --partition=test
+
+module purge
+module load StdEnv ${compiler}/${compiler_version} ${mpi}/${mpi_version}
+module load netcdf/4.7.0 netcdf-fortran/4.4.4 hdf5/1.10.4-mpi
 
 ## run my MPI executable
 srun ./nemo
