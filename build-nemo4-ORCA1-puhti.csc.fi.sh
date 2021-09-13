@@ -65,14 +65,14 @@ EOF
 # get input data and run the experiment
 ENAME=EXP00
 cd cfgs/MY_ORCA1_ICE/${ENAME}
-# instead of copying namelist_cfg sed it from the ORCA2!
-cp -p $PROJAPPL/nemoinput/ORCA1/namelist_cfg.orig namelist_cfg
 
 cp -p $PROJAPPL/nemoinput/ORCA1/*.nc .
 tar -xf $PROJAPPL/nemoinput/ORCA2_ICE_v4.0.tar *_fill.nc.gz
 gunzip *_fill.nc.gz
 
 cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
+# edit and replace this namelist for your purposes
+cp -p $PROJAPPL/$USER/nemoatpuhti/namelist_cfg.orca1 namelist_cfg
 
 exit 0
 
