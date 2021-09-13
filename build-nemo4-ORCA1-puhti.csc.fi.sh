@@ -66,15 +66,13 @@ EOF
 ENAME=EXP00
 cd cfgs/MY_ORCA1_ICE/${ENAME}
 
-cp -p $PROJAPPL/nemoinput/ORCA1/*.nc .
+cp $PROJAPPL/nemoinput/ORCA1/*.nc .
 tar -xf $PROJAPPL/nemoinput/ORCA2_ICE_v4.0.tar *_fill.nc.gz
 gunzip *_fill.nc.gz
 
 cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
 # edit and replace this namelist for your purposes
 cp -p $PROJAPPL/$USER/nemoatpuhti/namelist_cfg.orca1 namelist_cfg
-
-exit 0
 
 sbatch << EOF
 #!/bin/bash -l
@@ -90,7 +88,7 @@ sbatch << EOF
 ## the number of processes (number of cores)
 #SBATCH -n 38
 ## queue
-#SBATCH -p small
+#SBATCH -p test
 
 module purge
 module load StdEnv ${compiler}/${compiler_version} ${mpi}/${mpi_version}
