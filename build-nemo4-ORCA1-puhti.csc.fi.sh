@@ -66,9 +66,10 @@ EOF
 ENAME=EXP00
 cd cfgs/MY_ORCA1_ICE/${ENAME}
 
+cp $PROJAPPL/nemoinput/EMPave_old.dat .
 cp $PROJAPPL/nemoinput/ORCA1/*.nc .
 tar -xf $PROJAPPL/nemoinput/ORCA2_ICE_v4.0.tar *_fill.nc.gz
-gunzip *_fill.nc.gz
+gunzip -f *_fill.nc.gz
 
 cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
 # edit and replace this namelist for your purposes
