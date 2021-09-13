@@ -60,39 +60,18 @@ cat > arch/arch-${compiler}-puhti.csc.fi.fcm <<EOF
 %USER_LIB            %XIOS_LIB %NCDF_LIB
 EOF
 
-./makenemo -j 8 -m ${compiler}-puhti.csc.fi -d "OCE ICE" -r ORCA2_ICE_PISCES -n MY_ORCA2_ICE del_key "key_top"
+./makenemo -j 8 -m ${compiler}-puhti.csc.fi -d "OCE ICE" -r ORCA2_ICE_PISCES -n MY_ORCA1_ICE del_key "key_top"
 
 # get input data and run the experiment
 ENAME=EXP00
-mkdir -p cfgs/MY_ORCA1_ICE/${ENAME}
 cd cfgs/MY_ORCA1_ICE/${ENAME}
-ln -s ../../SHARED/namelist_top_ref .
-ln -s ../../SHARED/namelist_ref .
-ln -s ../../SHARED/namelist_ice_ref .
-ln -s ../../SHARED/namelist_pisces_ref .
-
-cp -p ../../MY_ORCA2_ICE/EXP00/namelist_top_cfg .
-cp -p ../../MY_ORCA2_ICE/EXP00/namelist_pisces_cfg .
-cp -p ../../MY_ORCA2_ICE/EXP00/namelist_ice_cfg .
+# instead of copying namelist_cfg sed it from the ORCA2!
 cp -p $PROJAPPL/nemoinput/ORCA1/namelist_cfg.orig namelist_cfg
 
-ln -s ../../SHARED/grid_def_nemo.xml .
-ln -s ../../SHARED/field_def_nemo-pisces.xml .
-ln -s ../../SHARED/field_def_nemo-oce.xml .
-ln -s ../../SHARED/field_def_nemo-ice.xml .
-ln -s ../../SHARED/domain_def_nemo.xml .
-ln -s ../../SHARED/axis_def_nemo.xml .
-
-cp -p ../../MY_ORCA2_ICE/EXP00/iodef.xml .
-cp -p ../../MY_ORCA2_ICE/EXP00/file_def_nemo-pisces.xml .
-cp -p ../../MY_ORCA2_ICE/EXP00/file_def_nemo-oce.xml .
-cp -p ../../MY_ORCA2_ICE/EXP00/file_def_nemo-ice.xml .
-cp -p ../../MY_ORCA2_ICE/EXP00/context_nemo.xml .
-
-cp -p ../../MY_ORCA2_ICE/BLD/bin/nemo.exe .
-ln -s ../../MY_ORCA2_ICE/BLD/bin/nemo.exe nemo.exe.lnk
-
 cp -p $PROJAPPL/nemoinput/ORCA1/*.nc .
+tar -xf $PROJAPPL/nemoinput/ORCA2_ICE_v4.0.tar *_fill.nc.gz
+gunzip *_fill.nc.gz
+
 cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
 
 exit 0
@@ -103,13 +82,13 @@ sbatch << EOF
 ### parallel job script example
 ###
 ## name of your job
-#SBATCH --job-name=o2
+#SBATCH --job-name=orca1
 #SBATCH --account=project_2000789
 #SBATCH --mem-per-cpu=2G
 ## how long a job takes, wallclock time hh:mm:ss
-#SBATCH -t 02:00:00
+#SBATCH -t 00:15:00
 ## the number of processes (number of cores)
-#SBATCH -n 40
+#SBATCH -n 38
 ## queue
 #SBATCH -p small
 
@@ -118,5 +97,5 @@ module load StdEnv ${compiler}/${compiler_version} ${mpi}/${mpi_version}
 module load netcdf/4.7.0 netcdf-fortran/4.4.4 hdf5/1.10.4-mpi
 
 ## run my MPI executable
-srun ./nemo.exe
+srun ./nemo
 EOF

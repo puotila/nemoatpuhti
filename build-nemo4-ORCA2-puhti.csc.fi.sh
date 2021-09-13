@@ -8,7 +8,7 @@ set -ex
 # 2018-12-14, Petteri Uotila, INAR/UH
 # 2021-01-28, Petteri Uotila, INAR/UH
 
-nemo_version=4.0
+nemo_version=4.0.6
 
 compiler=intel
 compiler_version=19.0.4
@@ -25,7 +25,7 @@ export SCRATCH=/scratch/project_2000789
 mkdir -p ${SCRATCH}/${USER}
 cd ${SCRATCH}/${USER}
 # Checkout sources
-svn co https://forge.ipsl.jussieu.fr/nemo/svn/NEMO/releases/r${nemo_version}/r4.0.6 nemo${nemo_version}
+svn co https://forge.ipsl.jussieu.fr/nemo/svn/NEMO/releases/r4.0/r${nemo_version} nemo${nemo_version}
 
 cd nemo${nemo_version}
 
@@ -70,23 +70,21 @@ if [ ! -f ORCA2_ICE_v4.0.tar ]; then
     gunzip *.gz
 fi
 
-exit 0
-
 sbatch << EOF
 #!/bin/bash -l
 ###
 ### parallel job script example
 ###
 ## name of your job
-#SBATCH --job-name=gyre
+#SBATCH --job-name=orca2
 #SBATCH --account=project_2000789
 #SBATCH --mem-per-cpu=2G
 ## how long a job takes, wallclock time hh:mm:ss
-#SBATCH -t 02:00:00
+#SBATCH -t 00:15:00
 ## the number of processes (number of cores)
 #SBATCH -n 16
 ## queue
-#SBATCH -p small
+#SBATCH -p test
 
 module purge
 module load StdEnv ${compiler}/${compiler_version} ${mpi}/${mpi_version}
