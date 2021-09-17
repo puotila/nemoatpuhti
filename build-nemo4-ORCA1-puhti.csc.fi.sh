@@ -66,7 +66,15 @@ EOF
 ENAME=EXP00
 cd cfgs/MY_ORCA1_ICE/${ENAME}
 
+ln -s $SCRATCH/nemoinput/ORCA1/ORCA_R1_zps_domcfg.nc
 echo "                               0  0.0000000000000000E+00  0.0000000000000000E+00" > EMPave_old.dat
+
+ln -s $SCRATCH/nemoinput/ORCA1/mixing_power_bot.nc .
+ln -s $SCRATCH/nemoinput/ORCA1/mixing_power_pyc.nc .
+ln -s $SCRATCH/nemoinput/ORCA1/mixing_power_cri.nc .
+ln -s $SCRATCH/nemoinput/ORCA1/decay_scale_bot.nc .
+ln -s $SCRATCH/nemoinput/ORCA1/decay_scale_cri.nc .
+
 
 cp -p $PROJAPPL/$USER/nemoatpuhti/namelist_cfg.orca1 namelist_cfg
 cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .

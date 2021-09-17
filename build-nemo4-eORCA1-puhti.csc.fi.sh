@@ -66,6 +66,7 @@ EOF
 ENAME=EXP00
 cd cfgs/MY_eORCA1_ICE/${ENAME}
 
+ln -s $SCRATCH/nemoinput/eORCA1/eORCA_R1_zps_domcfg.nc
 echo "                               0  0.0000000000000000E+00  0.0000000000000000E+00" > EMPave_old.dat
 
 cp -p $PROJAPPL/$USER/nemoatpuhti/namelist_cfg.eorca1 namelist_cfg
