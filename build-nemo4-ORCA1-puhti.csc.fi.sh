@@ -66,14 +66,10 @@ EOF
 ENAME=EXP00
 cd cfgs/MY_ORCA1_ICE/${ENAME}
 
-cp $PROJAPPL/nemoinput/EMPave_old.dat .
-cp $PROJAPPL/nemoinput/ORCA1/*.nc .
-tar -xf $PROJAPPL/nemoinput/ORCA2_ICE_v4.0.tar *_fill.nc.gz
-gunzip -f *_fill.nc.gz
+echo "                               0  0.0000000000000000E+00  0.0000000000000000E+00" > EMPave_old.dat
 
-cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
-# edit and replace this namelist for your purposes
 cp -p $PROJAPPL/$USER/nemoatpuhti/namelist_cfg.orca1 namelist_cfg
+cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
 
 sbatch << EOF
 #!/bin/bash -l
@@ -87,7 +83,7 @@ sbatch << EOF
 ## how long a job takes, wallclock time hh:mm:ss
 #SBATCH -t 00:15:00
 ## the number of processes (number of cores)
-#SBATCH -n 38
+#SBATCH -n 36
 ## queue
 #SBATCH -p test
 
