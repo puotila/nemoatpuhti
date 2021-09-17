@@ -66,12 +66,10 @@ EOF
 ENAME=EXP00
 cd cfgs/MY_eORCA1_ICE/${ENAME}
 
-cp $PROJAPPL/nemoinput/EMPave_old.dat .
-cp $PROJAPPL/nemoinput/eORCA1/*.nc .
+echo "                               0  0.0000000000000000E+00  0.0000000000000000E+00" > EMPave_old.dat
 
-cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
-# edit and replace this namelist for your purposes
 cp -p $PROJAPPL/$USER/nemoatpuhti/namelist_cfg.eorca1 namelist_cfg
+cp -p $PROJAPPL/$USER/nemoatpuhti/nemorun_orca1.sh .
 
 sbatch << EOF
 #!/bin/bash -l
