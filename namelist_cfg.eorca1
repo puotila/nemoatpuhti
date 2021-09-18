@@ -151,6 +151,7 @@
    rn_deds     =   -40.00  !  magnitude of the damping on salinity   [mm/day]
    ln_sssr_bnd =  .true.   !  flag to bound erp term (associated with nn_sssr=2)
    rn_sssr_bnd =   4.e0    !  ABS(Max/Min) value of the damping erp term [mm/day]
+   cn_dir = '/scratch/project_2000789/nemoinput/eORCA1/'  ! 
    !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
