@@ -47,17 +47,12 @@
    ln_tsd_init = .true.          !  ocean initialisation
    ln_tsd_dmp  = .false.         !  T-S restoring   (see namtra_dmp)
 
-   cn_dir = '/scratch/project_2000789/nemoinput/ORCA1/'     !  root directory for the T-S data location
+   cn_dir = '/scratch/project_2000789/nemoinput/ORCA025/'     !  root directory for the T-S data location
    !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
-   sn_tem  = 'temperature.EN4.ORCA1L75.nc', -1 ,'votemper' , .true. , .true. , 'yearly' , ''  ,   ''    ,    ''
-   sn_sal  = 'salinity.EN4.ORCA1L75.nc', -1 ,'vosaline' , .true. , .true. , 'yearly' , ''  ,   ''    ,    ''
-/
-!-----------------------------------------------------------------------
-&namcrs        !   coarsened grid (for outputs and/or TOP)              (ln_crs =T)
-!-----------------------------------------------------------------------
-   ln_msh_crs  = .false.   ! =T create a mesh & mask file
+   sn_tem  = 'conservative_temperature_WOA13_decav_Reg1L75_clim', -1 ,'votemper' , .true. , .true. , 'yearly' , 'weights_WOA13d1_2_eorca025_bilinear2.nc'  ,   ''    ,    ''
+   sn_sal  = 'absolute_salinity_WOA13_decav_Reg1L75_clim'       , -1 ,'vosaline' , .true. , .true. , 'yearly' , 'weights_WOA13d1_2_eorca025_bilinear2.nc'  ,   ''    ,    ''
 /
 !!======================================================================
 !!            ***  Surface Boundary Condition namelists  ***          !!
@@ -89,9 +84,9 @@
    nn_ice      = 2         !  =2 or 3 automatically for SI3 or CICE    ("key_si3" or "key_cice")
                            !          except in AGRIF zoom where it has to be specified
                      ! Misc. options of sbc : 
-   ln_traqsr   = .true.    !  Light penetration in the ocean            (T => fill namtra_qsr)
+   ln_traqsr   = .false.   !  Light penetration in the ocean            (T => fill namtra_qsr)
    ln_ssr      = .true.    !  Sea Surface Restoring on T and/or S       (T => fill namsbc_ssr)
-   ln_rnf      = .true.    !  runoffs                                   (T => fill namsbc_rnf)
+   ln_rnf      = .true.   !  runoffs                                   (T => fill namsbc_rnf)
    nn_fwb      = 2         !  FreshWater Budget: 
    !                       !    =2 annual global mean of e-p-r set to zero
    ln_wave     = .false.   !  Activate coupling with wave  (T => fill namsbc_wave)
@@ -111,65 +106,69 @@
    !                    !  bulk algorithm :
    ln_NCAR    = .true.     ! "NCAR"      algorithm   (Large and Yeager 2008)
 
-   cn_dir = '/scratch/project_2000789/nemoforcing/default/'  !  root directory for the bulk data location
+   cn_dir = '/scratch/project_2000789/nemoforcing/JRA-55/'  !  root directory for the bulk data location
    !___________!_________________________!___________________!___________!_____________!________!___________!______________________________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ !          weights filename            ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                                      ! pairing  !    filename   !
-   sn_wndi     = 'u_10.15JUNE2009_fill'       ,    6.        , 'U_10_MOD',   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bicub.nc'  , 'Uwnd'   , ''
-   sn_wndj     = 'v_10.15JUNE2009_fill'       ,    6.        , 'V_10_MOD',   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bicub.nc'  , 'Vwnd'   , ''
-   sn_qsr      = 'ncar_rad.15JUNE2009_fill'   ,   24.        , 'SWDN_MOD',   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
-   sn_qlw      = 'ncar_rad.15JUNE2009_fill'   ,   24.        , 'LWDN_MOD',   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
-   sn_tair     = 't_10.15JUNE2009_fill'       ,    6.        , 'T_10_MOD',   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
-   sn_humi     = 'q_10.15JUNE2009_fill'       ,    6.        , 'Q_10_MOD',   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
-   sn_prec     = 'ncar_precip.15JUNE2009_fill',   -1.        , 'PRC_MOD1',   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
-   sn_snow     = 'ncar_precip.15JUNE2009_fill',   -1.        , 'SNOW'    ,   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
-   sn_slp      = 'slp.15JUNE2009_fill'        ,    6.        , 'SLP'     ,   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
-   sn_tdif     = 'taudif_core'                ,   24.        , 'taudif'  ,   .false.   , .true. , 'yearly'  , 'weights_core2_orca1_bilin.nc' , ''       , ''
+   sn_wndi     = 'uas'       ,         3         , 'uas'    ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bicub.nc'  , 'Uwnd' 
+   sn_wndj     = 'vas'       ,         3         , 'vas'    ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bicub.nc'  , 'Vwnd' 
+   sn_qsr      = 'rsds'      ,         3         , 'rsds'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bilin.nc' , ''     
+   sn_qlw      = 'rlds'      ,         3         , 'rlds'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bilin.nc' , ''     
+   sn_tair     = 'tas'       ,         3         , 'tas'    ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bilin.nc' , ''    
+   sn_humi     = 'huss'      ,         3         , 'huss'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bilin.nc' , ''     
+   sn_prec     = 'prra'      ,         3         , 'prra'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bilin.nc' , ''    
+   sn_snow     = 'prsn'      ,         3         , 'prsn'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_ORCA025_bilin.nc' , ''   
+   sn_slp      = 'psl'       ,         3         , 'psl'    ,   .true.     , .false. , 'yearly' , 'weights_jra55_ORCA025_bilin.nc' , ''       , ''
+               !
+   ln_taudif   = .false.   !  HF tau contribution: use "mean of stress module - module of the mean stress" data
+   rn_zqt      = 2.        !  Air temperature and humidity reference height (m) (ln_bulk2z)
+   rn_zu       = 10.       !  Wind vector reference height (m)                  (ln_bulk2z)
+   rn_pfac     = 1.        !  multiplicative factor for precipitation (total & snow)
+   rn_efac     = 1.        !  multiplicative factor for evaporation (0. or 1.)
+   rn_vfac     = 0.        !  multiplicative factor for ocean/ice velocity 
+                           !  in the calculation of the wind stress (0.=absolute winds or 1.=relative winds)
+
 /
 !-----------------------------------------------------------------------
 &namtra_qsr    !   penetrative solar radiation                          (ln_traqsr =T)
 !-----------------------------------------------------------------------
    !                       ! type of penetration                        (default: NO selection)
-   ln_qsr_rgb  = .true.       !  RGB light penetration (Red-Green-Blue)
+   ln_qsr_rgb  = .false.       !  RGB light penetration (Red-Green-Blue)
    !
    nn_chldta   =      1       !  RGB : Chl data (=1) or cst value (=0)
 
-   cn_dir = '/scratch/project_2000789/nemoinput/ORCA1/'  !  root directory for the chlorophyl data location
+   cn_dir = '/scratch/project_2000789/nemoinput/ORCA025/'  !  root directory for the chlorophyl data location
    !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
-   !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
+   !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !sn_chl      ='chlorophyll'            ,        -1         , 'CHLA'    ,   .true.    , .true. , 'yearly'  , ''               , ''       , ''
    sn_chl      = 'merged_ESACCI_BIOMER4V1R1_CHL_ORCA1',        -1         , 'CHLA'    ,   .true.    , .true. , 'yearly'  , ''               , ''       , ''
 /
 !-----------------------------------------------------------------------
 &namsbc_ssr    !   surface boundary condition : sea surface restoring   (ln_ssr =T)
 !-----------------------------------------------------------------------
+!              !   file name  ! frequency (hours) ! variable   ! time interpol. !  clim   ! 'yearly'/ ! weights  ! rotation !
+!              !              !  (if <0  months)  !   name     !    (logical)   !  (T/F)  ! 'monthly' ! filename ! pairing  !
+   sn_sss      = 'sss_absolute_salinity_WOA13_decav_Reg1L75_clim', -1. , 'sosaline', .true. , .true. , 'yearly' , 'weights_WOA13d1_2_eorca025_bilinear.nc' , ''
+
+   cn_dir      = '/scratch/project_2000789/nemoinput/ORCA025/'      !  root directory for the SST/SSS data location
    nn_sssr     =     2     !  add a damping term to the surface freshwater flux
-   rn_deds     =   -40.00  !  magnitude of the damping on salinity   [mm/day]
+   rn_deds     =  -20.00   !  magnitude of the damping on salinity   [mm/day]
    ln_sssr_bnd =  .true.   !  flag to bound erp term (associated with nn_sssr=2)
-   rn_sssr_bnd =   4.e0    !  ABS(Max/Min) value of the damping erp term [mm/day]
-   cn_dir      = '/scratch/project_2000789/nemoinput/ORCA1/'      !  root directory for the SST/SSS data location
-   !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
-   !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
-   !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
-   sn_sss      = 'sss.EN4.ORCA1L75'      ,        -1         , 'vosaline',    .true.   , .true. , 'yearly'  ,    ''            ,    ''    ,     ''
+   rn_sssr_bnd =   2.e0    !  ABS(Max/Min) value of the damping erp term [mm/day]
 /
 !-----------------------------------------------------------------------
 &namsbc_rnf    !   runoffs                                              (ln_rnf =T)
 !-----------------------------------------------------------------------
-   ln_rnf_mouth = .false.    !  specific treatment at rivers mouths
-      rn_hrnf     =  15.e0    !  depth over which enhanced vertical mixing is used    (ln_rnf_mouth=T)
-      rn_avt_rnf  =   1.e-3   !  value of the additional vertical mixing coef. [m2/s] (ln_rnf_mouth=T)
+   ln_rnf_mouth = .false.  !  specific treatment at rivers mouths
+   rn_hrnf     =  15.e0    !  depth over which enhanced vertical mixing is used    (ln_rnf_mouth=T)
+   rn_avt_rnf  =   1.e-3   !  value of the additional vertical mixing coef. [m2/s] (ln_rnf_mouth=T)
    rn_rfact    =   1.e0    !  multiplicative factor for runoff
 
-   cn_dir = '/scratch/project_2000789/nemoinput/ORCA1/'  !  root directory for the location of the runoff files
+   cn_dir = '/scratch/project_2000789/nemoinput/ORCA025/'  !  root directory for the location of the runoff files
    !___________!_____________!___________________!___________!_____________!_________!___________!__________!__________!_______________!
    !           !  file name  ! frequency (hours) ! variable  ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
    !           !             !  (if <0  months)  !   name    !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_rnf      = 'runoff-icb_DaiTrenberth_Depoorter_ORCA1_JD',    -1    , 'sorunoff',   .true.     , .true. , 'yearly'  , ''       , ''       , ''
-   sn_cnf      = 'runoff-icb_DaiTrenberth_Depoorter_ORCA1_JD',     0    , 'socoefr' ,   .false.    , .true. , 'yearly'  , ''       , ''       , ''
-   sn_s_rnf    = 'runoffs'            ,    24    , 'rosaline',   .true.     , .true. , 'yearly'  , ''       , ''       , ''
-   sn_t_rnf    = 'runoffs'            ,    24    , 'rotemper',   .true.     , .true. , 'yearly'  , ''       , ''       , ''
-   sn_dep_rnf  = 'runoffs'            ,     0    , 'rodepth' ,   .false.    , .true. , 'yearly'  , ''       , ''       , ''
+   sn_rnf      = 'friver'    ,        24          , 'friver'  ,   .true.     , .false., 'yearly'  , 'weights_jra55_ORCA025_bilin.nc'       , ''       , ''
 /
 !-----------------------------------------------------------------------
 &namsbc_wave   ! External fields from wave model                        (ln_wave=T)
@@ -180,11 +179,11 @@
 !-----------------------------------------------------------------------
    ln_icebergs = .false.    ! activate iceberg floats (force =F with "key_agrif")
 
-   cn_dir = '/scratch/project_2000789/nemoinput/ORCA1/'  !  root directory for the location of drag coefficient files
+   cn_dir = '/scratch/project_2000789/nemoinput/ORCA025/'  !  root directory for the location of drag coefficient files
    !______!___________!___________________!______________!______________!_________!___________!__________!__________!_______________!
    !      ! file name ! frequency (hours) !   variable   ! time interp. !  clim   ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
    !      !           !  (if <0  months)  !     name     !   (logical)  !  (T/F ) ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_icb =  'calving',       -1.         , 'calving'    ,   .true.     , .true.  , 'yearly'  , ''       , ''       , ''
+   sn_icb =  'calving',       -1          , 'calving'    ,   .true.     , .true.  , 'yearly'  , ''       , ''       , ''
 /
 !!======================================================================
 !!               ***  Lateral boundary condition  ***                 !!
@@ -228,14 +227,14 @@
 !-----------------------------------------------------------------------
 &nambbc        !   bottom temperature boundary condition                (default: OFF)
 !-----------------------------------------------------------------------
-   ln_trabbc   = .true.    !  Apply a geothermal heating at the ocean bottom
+   ln_trabbc   = .false.    !  Apply a geothermal heating at the ocean bottom
       nn_geoflx   =    2      !  geothermal heat flux: = 2 read variable flux [mW/m2]
 
-   cn_dir = '/scratch/project_2000789/nemoinput/ORCA1/'  !  root directory for the geothermal data location
+   cn_dir = '/scratch/project_2000789/nemoinput/ORCA025/'  !  root directory for the geothermal data location
    !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
-   sn_qgh      ='Goutorbe_ghflux.nc',  -12.  , 'gh_flux'    ,   .false.     , .true. , 'yearly'  , 'weights_goutorbe_orca1_bilin.nc'       , ''       , ''
+   sn_qgh      ='Goutorbe_ghflux.nc',  -12.  , 'gh_flux'    ,   .false.     , .true. , 'yearly'  , 'weights_goutorbe_orca025_bilin.nc'       , ''       , ''
 /
 !-----------------------------------------------------------------------
 &nambbl        !   bottom boundary layer scheme                         (default: OFF)
@@ -367,7 +366,7 @@
    ln_zdfddm   = .true.    ! double diffusive mixing
       rn_avts  =    1.e-4     !  maximum avs (vertical mixing on salinity)
       rn_hsbfr =    1.6       !  heat/salt buoyancy flux ratio
-   ln_zdfiwm   = .true.       ! internal wave-induced mixing            (T =>   fill namzdf_iwm)
+   ln_zdfiwm   = .false.       ! internal wave-induced mixing            (T =>   fill namzdf_iwm)
    !                       !  Coefficients
    rn_avm0     =   1.2e-4     !  vertical eddy viscosity   [m2/s]       (background Kz if ln_zdfcst=F)
    rn_avt0     =   1.2e-5     !  vertical eddy diffusivity [m2/s]       (background Kz if ln_zdfcst=F)
