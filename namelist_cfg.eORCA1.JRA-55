@@ -19,7 +19,7 @@
 !-----------------------------------------------------------------------
 &namrun        !   parameters of the run
 !-----------------------------------------------------------------------
-   cn_exp      =  "eORCA1" !  experience name
+   cn_exp      =  "eORCA1.L75" !  experience name
    nn_it000    =       1   !  first time step
    nn_itend    =   11680   !  last  time step (std 5475)
    nn_date0    =19580101   !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
