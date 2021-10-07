@@ -15,9 +15,10 @@ CONF=MY_${HGRID}_ICE
 # experiment directory in that configuration
 ENAME=EXP01
 # atmospheric forcing
-FORCE=JRA-55
+#FORCE=JRA-55
+FORCE=default
 # how many cycles (e.g. years) to run 
-ncycles=2 
+ncycles=10 
 # experiment name [check this is ok]
 cn_exp="eORCA1.L75"
 # initial date of the experiment [check this is ok]
@@ -81,7 +82,7 @@ write_cycle_runscript() {
 #SBATCH --mem-per-cpu=2G
 #SBATCH -t 00:15:00
 #SBATCH -n 36
-#SBATCH -p test
+#SBATCH -p small
 
 module purge
 module load StdEnv intel/19.0.4 intel-mpi/18.0.5
@@ -119,7 +120,7 @@ sed -i  "s|^.* nn_date0.* =.*$|   nn_date0    = $nn_date0  |g" namelist_cfg
 sed -i  "s|^.* nn_stock.* =.*$|   nn_stock    = $run_length  |g" namelist_cfg
 write_cycle_runscript $ncycle
 cd ${EDIR}/${cycstr}
-#jobid=`sbatch --parsable nemorun.sh`
+jobid=`sbatch --parsable nemorun.sh`
 pcycstr=${cycstr}
 
 # loop the remaining years here (restarts from the previous year)
@@ -151,7 +152,7 @@ do
     write_cycle_runscript ${ncycle}
     cycstr=`printf "%03d" $ncycle`
     cd ${EDIR}/${cycstr}
-    #jobid=`sbatch --dependency=afterany:$jobid --parsable nemorun.sh`
+    jobid=`sbatch --dependency=afterok:$jobid --parsable nemorun.sh`
     pcycstr=${cycstr}
 done
 

@@ -116,19 +116,26 @@
    !                    !  bulk algorithm :
    ln_NCAR    = .true.     ! "NCAR"      algorithm   (Large and Yeager 2008)
 
-   cn_dir = '/scratch/project_2000789/nemoforcing/default/'  !  root directory for the bulk data location
+   cn_dir = '/scratch/project_2000789/nemoforcing/JRA-55/'  !  root directory for the bulk data location
    !___________!_________________________!___________________!___________!_____________!________!___________!______________________________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ !          weights filename            ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                                      ! pairing  !    filename   !
-   sn_wndi     = 'u_10_core_oonly'       ,         6         , 'U_10_MOD',   .true.     ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bicubic.nc'  , 'U1'    , ''
-   sn_wndj     = 'v_10_core_oonly'       ,         6         , 'V_10_MOD',   .true.     ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bicubic.nc'  , 'V1'    , ''
-   sn_qsr      = 'rad_core_oonly'        ,        24         , 'SWDN_MOD',   .false.    ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bilinear.nc' , ''      , ''
-   sn_qlw      = 'rad_core_oonly'        ,        24         , 'LWDN_MOD',   .true.     ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bilinear.nc' , ''      , ''
-   sn_tair     = 't_10_core_oonly'       ,         6         , 'T_10_MOD',   .false.    ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bilinear.nc' , ''      , ''
-   sn_humi     = 'q_10_core_oonly'       ,         6         , 'Q_10_MOD',   .false.    ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bilinear.nc' , ''      , ''
-   sn_prec     = 'tprecip_core_oonly'    ,        -1         , 'TPRECIP' ,   .true.     ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bilinear.nc' , ''      , ''
-   sn_snow     = 'tprecip_core_oonly'    ,        -1         , 'SNOW'    ,   .true.     ,  .false. , 'yearly'  , 'weights_coreII_2_eorca1_bilinear.nc' , ''      , ''
-   sn_slp      = 'slp_core_oonly'        ,         6         , 'SLP'     ,   .true.     , .false.  , 'yearly'  , 'weights_coreII_2_eorca1_bilinear.nc' , ''      , ''
+   sn_wndi     = 'uas'       ,         3         , 'uas'    ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bicub.nc'  , 'Uwnd' 
+   sn_wndj     = 'vas'       ,         3         , 'vas'    ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bicub.nc'  , 'Vwnd' 
+   sn_qsr      = 'rsds'      ,         3         , 'rsds'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bilin.nc' , ''     
+   sn_qlw      = 'rlds'      ,         3         , 'rlds'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bilin.nc' , ''     
+   sn_tair     = 'tas'       ,         3         , 'tas'    ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bilin.nc' , ''    
+   sn_humi     = 'huss'      ,         3         , 'huss'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bilin.nc' , ''     
+   sn_prec     = 'prra'      ,         3         , 'prra'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bilin.nc' , ''    
+   sn_snow     = 'prsn'      ,         3         , 'prsn'   ,   .true.     , .false.,  'yearly' , 'weights_jra55_orca1_bilin.nc' , ''   
+   sn_slp      = 'psl'       ,         3         , 'psl'    ,   .true.     , .false. , 'yearly' , 'weights_jra55_orca1_bilin.nc' , ''       , ''
+               !
+   ln_taudif   = .false.   !  HF tau contribution: use "mean of stress module - module of the mean stress" data
+   rn_zqt      = 2.        !  Air temperature and humidity reference height (m) (ln_bulk2z)
+   rn_zu       = 10.       !  Wind vector reference height (m)                  (ln_bulk2z)
+   rn_pfac     = 1.        !  multiplicative factor for precipitation (total & snow)
+   rn_efac     = 1.        !  multiplicative factor for evaporation (0. or 1.)
+   rn_vfac     = 0.        !  multiplicative factor for ocean/ice velocity 
 /
 !-----------------------------------------------------------------------
 &namtra_qsr    !   penetrative solar radiation                          (ln_traqsr =T)
