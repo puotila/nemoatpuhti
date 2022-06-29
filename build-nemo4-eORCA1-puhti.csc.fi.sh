@@ -9,6 +9,8 @@ set -ex
 # 2021-01-28, Petteri Uotila, INAR/UH
 # 2021-09-10, Petteri Uotila, INAR/UH
 
+# NOTE: number of cpus need to be dividable by 3!!
+
 nemo_version=4.0.6
 
 compiler=intel
