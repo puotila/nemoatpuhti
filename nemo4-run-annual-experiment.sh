@@ -18,7 +18,7 @@ ENAME=EXP01
 #FORCE=JRA-55
 FORCE=default
 # how many cycles (e.g. years) to run 
-ncycles=10 
+ncycles=1
 # experiment name [check this is ok]
 cn_exp="eORCA1.L75"
 # initial date of the experiment [check this is ok]
@@ -28,8 +28,7 @@ PROJECT=project_2000789
 # model time step in seconds [does not change]
 rn_rdt=2700 # eORCA1/ORCA1
 # length of one cycle [year, no-leap]
-# cycle_length_in_days=365
-cycle_length_in_days=1
+cycle_length_in_days=365
 
 #####
 # no need to change anything below here
@@ -80,7 +79,7 @@ write_cycle_runscript() {
 #SBATCH --job-name=o1_$cycstr
 #SBATCH --account=project_2000789
 #SBATCH --mem-per-cpu=2G
-#SBATCH -t 00:15:00
+#SBATCH -t 12:00:00
 #SBATCH -n 36
 #SBATCH -p small
 
