@@ -7,7 +7,7 @@ set -ex
 # 2018-12-11, Juha Lento, CSC
 # 2018-12-14, Petteri Uotila, INAR/UH
 
-nemo_version=4.0
+nemo_version=4.2.0
 
 compiler=intel
 compiler_version=19.0.4
