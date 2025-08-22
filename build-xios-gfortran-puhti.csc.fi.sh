@@ -13,47 +13,83 @@ set -ex
 # The following build instruction is based on:
 # - http://forge.ipsl.jussieu.fr/ioserver/wiki/documentation
 
-xios_version=2.5
+#xios_version=2.5
+#xios_dir=xios-${xios_version}
+xios_dir=XIOS
 
-compiler=intel
-compiler_version=19.0.4
-mpi=intel-mpi
-mpi_version=18.0.5
+compiler=gcc
 
 module purge
-module load StdEnv ${compiler}/${compiler_version} ${mpi}/${mpi_version}
-module load netcdf/4.7.0 netcdf-fortran/4.4.4 hdf5/1.10.4-mpi
+module load StdEnv # gcc openmpi imported automatically
+module load hdf5/1.12.2-mpi netcdf-c netcdf-fortran
+module load subversion perl
 
-cd $PROJAPPL
-svn co http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/branchs/xios-${xios_version}
-xios_revision=$(svn info | sed -n 's/Revision: \([0-9]\+\)/\1/p')
+cd $PROJAPPL/$USER
+#svn co http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/branchs/${xios_dir}
+svn co http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/trunk ${xios_dir}
+# xios_revision=$(svn info | sed -n 's/Revision: \([0-9]\+\)/\1/p')
 
 # Build
 
-cd xios-${xios_version}
+cd ${xios_dir}
 cat > arch/arch-${compiler}-puhti.csc.fi.fcm <<EOF
-%CCOMPILER      mpicxx
+%CCOMPILER      mpicc
 %FCOMPILER      mpif90
 %LINKER         mpif90
-%BASE_CFLAGS    $(case $compiler in (intel|gnu) echo '-ansi';;esac)
+
+%BASE_CFLAGS    -w -std=c++11 -D__XIOS_EXCEPTION
 %PROD_CFLAGS    -O3 -DBOOST_DISABLE_ASSERTS
-%BASE_FFLAGS    -D__NONE__ -fpp $(case $compiler in (gnu) echo '-ffree-line-length-none';; esac)
+%DEV_CFLAGS     -g -O2 
+%DEBUG_CFLAGS   -g 
+
+%BASE_FFLAGS    -D__NONE__
 %PROD_FFLAGS    -O3
+%DEV_FFLAGS     -g -O2
+%DEBUG_FFLAGS   -g 
+
 %BASE_INC       -D__NONE__
 %BASE_LD        -lstdc++
-%CPP            cpp -P
-%FPP            cpp -P -CC
-%MAKE           make
+
+%CPP            cpp 
+%FPP            cpp -P
+%MAKE           gmake
 EOF
 
 cat > arch/arch-${compiler}-puhti.csc.fi.path <<EOF
-NETCDF_INCDIR="-I${NETCDF_INSTALL_ROOT}/include -I${NETCDF_FORTRAN_INSTALL_ROOT}/include"
-NETCDF_LIBDIR="-L${NETCDF_INSTALL_ROOT}/lib -L${NETCDF_FORTRAN_INSTALL_ROOT}/lib"
-NETCDF_LIB="-lnetcdf -lnetcdff"
-HDF5_INCDIR="-I${HDF5_INSTALL_ROOT}/include"
-HDF5_LIBDIR="-L${HDF5_INSTALL_ROOT}/lib -L${PROJAPPL}/lib"
-HDF5_LIB="-lhdf5_hl -lhdf5 -lhdf5 -lz -lcurl"
+NETCDF_INCDIR="-I\${NETCDF_C_INSTALL_ROOT}/include -I\${NETCDF_FORTRAN_INSTALL_ROOT}/include"
+NETCDF_LIBDIR="-L\${NETCDF_C_INSTALL_ROOT}/lib -L\${NETCDF_FORTRAN_INSTALL_ROOT}/lib"
+NETCDF_LIB="-lnetcdff -lnetcdf"
+
+MPI_INCDIR=""
+MPI_LIBDIR=""
+MPI_LIB="-lcurl"
+
+HDF5DIR=\${HDF5_INSTALL_ROOT}
+HDF5_INCDIR="-I\${HDF5DIR}/include"
+HDF5_LIBDIR="-L\${HDF5DIR}/lib"
+HDF5_LIB="-lhdf5_hl -lhdf5 -lhdf5 -lz"
+
+BOOST_INCDIR="-I\${BOOST_ROOT}/include/boost"
+BOOST_LIBDIR="-L\${BOOST_ROOT}/lib"
+BOOST_LIB=""
+
+OASIS_INCDIR="-I\${PWD}/../../oasis3-mct/BLD/build/lib/psmile.MPI1"
+OASIS_LIBDIR="-L\${PWD}/../../oasis3-mct/BLD/lib"
+OASIS_LIB="-lpsmile.MPI1 -lscrip -lmct -lmpeu"
 EOF
 
-./make_xios --arch ${compiler}-puhti.csc.fi --job 8
+cat > arch/arch-${compiler}-puhti.csc.fi.env <<EOF
+export HDF5DIR=\${HDF5_INSTALL_ROOT}
+export HDF5_INC_DIR=\${HDF5DIR}/include
+export HDF5_LIB_DIR=\${HDF5DIR}/lib
+
+export NETCDF_INC_DIR=\${NETCDF_C_INSTALL_ROOT}/include
+export NETCDF_LIB_DIR=\${NETCDF_C_INSTALL_ROOT}/lib
+
+export BOOST_INC_DIR=\${BOOST_ROOT}/include/boost
+export BOOST_LIB_DIR=\${BOOST_ROOT}/lib
+EOF
+
+#./make_xios --prod --arch ${compiler}-puhti.csc.fi --job 8
+./make_xios --prod --arch ${compiler}-puhti.csc.fi
 
